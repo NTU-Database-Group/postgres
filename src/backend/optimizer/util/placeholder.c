@@ -222,7 +222,7 @@ find_placeholders_recurse(PlannerInfo *root, Node *jtnode)
 		find_placeholders_in_expr(root, j->quals);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type58: %d",
 			 (int) nodeTag(jtnode));
 }
 

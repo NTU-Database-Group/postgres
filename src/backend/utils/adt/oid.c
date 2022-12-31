@@ -341,7 +341,7 @@ oidparse(Node *node)
 			 */
 			return oidin_subr(castNode(Float, node)->fval, NULL, NULL);
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type75: %d", (int) nodeTag(node));
 	}
 	return InvalidOid;			/* keep compiler quiet */
 }

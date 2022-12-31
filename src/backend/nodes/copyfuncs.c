@@ -132,7 +132,7 @@ _copyA_Const(const A_Const *from)
 				COPY_STRING_FIELD(val.bsval.bsval);
 				break;
 			default:
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type19: %d",
 					 (int) nodeTag(&from->val));
 				break;
 		}
@@ -203,7 +203,7 @@ copyObjectImpl(const void *from)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(from));
+			elog(ERROR, "unrecognized node type20: %d", (int) nodeTag(from));
 			retval = 0;			/* keep compiler quiet */
 			break;
 	}

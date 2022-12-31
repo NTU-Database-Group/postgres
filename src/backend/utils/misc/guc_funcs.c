@@ -253,7 +253,7 @@ flatten_set_variable_args(const char *name, List *args)
 		}
 
 		if (!IsA(arg, A_Const))
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(arg));
+			elog(ERROR, "unrecognized node type81: %d", (int) nodeTag(arg));
 		con = (A_Const *) arg;
 
 		switch (nodeTag(&con->val))
@@ -306,7 +306,7 @@ flatten_set_variable_args(const char *name, List *args)
 				}
 				break;
 			default:
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type82: %d",
 					 (int) nodeTag(&con->val));
 				break;
 		}

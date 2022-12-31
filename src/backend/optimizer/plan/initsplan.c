@@ -129,7 +129,7 @@ add_base_rels_to_query(PlannerInfo *root, Node *jtnode)
 		add_base_rels_to_query(root, j->rarg);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type40: %d",
 			 (int) nodeTag(jtnode));
 }
 
@@ -266,7 +266,7 @@ add_vars_to_targetlist(PlannerInfo *root, List *vars,
 												where_needed);
 		}
 		else
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type41: %d", (int) nodeTag(node));
 	}
 }
 
@@ -1064,7 +1064,7 @@ deconstruct_recurse(PlannerInfo *root, Node *jtnode, bool below_outer_join,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type42: %d",
 			 (int) nodeTag(jtnode));
 		joinlist = NIL;			/* keep compiler quiet */
 	}

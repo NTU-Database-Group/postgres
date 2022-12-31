@@ -540,7 +540,8 @@ create_plan_recurse(PlannerInfo *root, Path *best_path, int flags)
 													 (GatherMergePath *) best_path);
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			pprint(best_path);
+			elog(ERROR, "unrecognized node type35: %d",
 				 (int) best_path->pathtype);
 			plan = NULL;		/* keep compiler quiet */
 			break;
@@ -777,7 +778,7 @@ create_scan_plan(PlannerInfo *root, Path *best_path, int flags)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type36: %d",
 				 (int) best_path->pathtype);
 			plan = NULL;		/* keep compiler quiet */
 			break;
@@ -1077,7 +1078,7 @@ create_join_plan(PlannerInfo *root, JoinPath *best_path)
 												 (NestPath *) best_path);
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type37: %d",
 				 (int) best_path->path.pathtype);
 			plan = NULL;		/* keep compiler quiet */
 			break;
@@ -3513,7 +3514,7 @@ create_bitmap_subplan(PlannerInfo *root, Path *bitmapqual,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d", nodeTag(bitmapqual));
+		elog(ERROR, "unrecognized node type38: %d", nodeTag(bitmapqual));
 		plan = NULL;			/* keep compiler quiet */
 	}
 
@@ -5444,7 +5445,7 @@ bitmap_subplan_mark_shared(Plan *plan)
 	else if (IsA(plan, BitmapIndexScan))
 		((BitmapIndexScan *) plan)->isshared = true;
 	else
-		elog(ERROR, "unrecognized node type: %d", nodeTag(plan));
+		elog(ERROR, "unrecognized node type39: %d", nodeTag(plan));
 }
 
 /*****************************************************************************

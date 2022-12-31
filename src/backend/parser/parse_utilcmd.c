@@ -289,7 +289,7 @@ transformCreateStmt(CreateStmt *stmt, const char *queryString)
 				break;
 
 			default:
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type64: %d",
 					 (int) nodeTag(element));
 				break;
 		}
@@ -3396,7 +3396,7 @@ transformAlterTableStmt(Oid relid, AlterTableStmt *stmt,
 						skipValidation = false;
 				}
 				else
-					elog(ERROR, "unrecognized node type: %d",
+					elog(ERROR, "unrecognized node type65: %d",
 						 (int) nodeTag(cmd->def));
 				break;
 
@@ -3670,7 +3670,7 @@ transformConstraintAttrs(CreateStmtContext *cxt, List *constraintList)
 		Constraint *con = (Constraint *) lfirst(clist);
 
 		if (!IsA(con, Constraint))
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type66: %d",
 				 (int) nodeTag(con));
 		switch (con->contype)
 		{
@@ -3903,7 +3903,7 @@ transformCreateSchemaStmt(CreateSchemaStmt *stmt)
 				break;
 
 			default:
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type67: %d",
 					 (int) nodeTag(element));
 		}
 	}

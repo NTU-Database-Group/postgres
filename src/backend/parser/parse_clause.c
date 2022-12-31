@@ -1539,7 +1539,7 @@ transformFromClauseItem(ParseState *pstate, Node *n,
 		return (Node *) j;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d", (int) nodeTag(n));
+		elog(ERROR, "unrecognized node type59: %d", (int) nodeTag(n));
 	return NULL;				/* can't get here, keep compiler quiet */
 }
 

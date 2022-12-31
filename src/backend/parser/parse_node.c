@@ -503,7 +503,7 @@ make_const(ParseState *pstate, A_Const *aconst)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(&aconst->val));
+			elog(ERROR, "unrecognized node type61: %d", (int) nodeTag(&aconst->val));
 			return NULL;		/* keep compiler quiet */
 	}
 

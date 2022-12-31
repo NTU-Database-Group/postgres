@@ -1078,7 +1078,7 @@ markRTEForSelectPriv(ParseState *pstate, int rtindex, AttrNumber col)
 				markRTEForSelectPriv(pstate, varno, InvalidAttrNumber);
 			}
 			else
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type62: %d",
 					 (int) nodeTag(j->larg));
 			if (IsA(j->rarg, RangeTblRef))
 			{
@@ -1093,7 +1093,7 @@ markRTEForSelectPriv(ParseState *pstate, int rtindex, AttrNumber col)
 				markRTEForSelectPriv(pstate, varno, InvalidAttrNumber);
 			}
 			else
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type63: %d",
 					 (int) nodeTag(j->rarg));
 		}
 		else

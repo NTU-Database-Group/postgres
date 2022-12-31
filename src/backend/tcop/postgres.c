@@ -868,7 +868,10 @@ pg_plan_query(Query *querytree, const char *query_string, int cursorOptions,
 		ResetUsage();
 
 	/* call the optimizer */
+	time_t start_time = time(NULL);
 	plan = planner(querytree, query_string, cursorOptions, boundParams);
+	time_t end_time = time(NULL);
+	elog(LOG, "planner time: %ld, query: %s\n", end_time - start_time, query_string);
 
 	if (log_planner_stats)
 		ShowUsage("PLANNER STATISTICS");

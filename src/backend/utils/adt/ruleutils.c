@@ -4118,7 +4118,7 @@ has_dangerous_join_using(deparse_namespace *dpns, Node *jtnode)
 			return true;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type76: %d",
 			 (int) nodeTag(jtnode));
 	return false;
 }
@@ -4289,7 +4289,7 @@ set_using_names(deparse_namespace *dpns, Node *jtnode, List *parentUsing)
 		set_using_names(dpns, j->rarg, parentUsing);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type77: %d",
 			 (int) nodeTag(jtnode));
 }
 
@@ -6272,7 +6272,7 @@ get_setop_query(Node *setOp, Query *query, deparse_context *context,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type78: %d",
 			 (int) nodeTag(setOp));
 	}
 }
@@ -9555,7 +9555,7 @@ get_rule_expr(Node *node, deparse_context *context,
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type79: %d", (int) nodeTag(node));
 			break;
 	}
 }
@@ -11213,7 +11213,7 @@ get_from_clause_item(Node *jtnode, Query *query, deparse_context *context)
 		}
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type80: %d",
 			 (int) nodeTag(jtnode));
 }
 

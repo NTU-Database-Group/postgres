@@ -256,7 +256,7 @@ equal(const void *a, const void *b)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type21: %d",
 				 (int) nodeTag(a));
 			retval = false;		/* keep compiler quiet */
 			break;

@@ -55,6 +55,7 @@ ifeq ($(with_systemd),yes)
 LIBS += -lsystemd
 endif
 
+LIBS += -lghttp
 override LDFLAGS := $(LDFLAGS) $(LDFLAGS_EX) $(LDFLAGS_EX_BE)
 
 ##########################################################################

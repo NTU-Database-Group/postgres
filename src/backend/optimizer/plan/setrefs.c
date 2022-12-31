@@ -1267,7 +1267,7 @@ set_plan_refs(PlannerInfo *root, Plan *plan, int rtoffset)
 			}
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type44: %d",
 				 (int) nodeTag(plan));
 			break;
 	}

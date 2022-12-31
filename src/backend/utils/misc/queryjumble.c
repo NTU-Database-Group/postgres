@@ -828,7 +828,7 @@ JumbleExpr(JumbleState *jstate, Node *node)
 			break;
 		default:
 			/* Only a warning, since we can stumble along anyway */
-			elog(WARNING, "unrecognized node type: %d",
+			elog(WARNING, "unrecognized node type83: %d",
 				 (int) nodeTag(node));
 			break;
 	}

@@ -383,7 +383,7 @@ ExecInitNode(Plan *node, EState *estate, int eflags)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type15: %d", (int) nodeTag(node));
 			result = NULL;		/* keep compiler quiet */
 			break;
 	}
@@ -533,7 +533,7 @@ MultiExecProcNode(PlanState *node)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type16: %d", (int) nodeTag(node));
 			result = NULL;
 			break;
 	}
@@ -758,7 +758,7 @@ ExecEndNode(PlanState *node)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type17: %d", (int) nodeTag(node));
 			break;
 	}
 }

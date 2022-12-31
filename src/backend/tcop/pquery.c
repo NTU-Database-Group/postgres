@@ -266,7 +266,7 @@ ChoosePortalStrategy(List *stmts)
 			}
 		}
 		else
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(stmt));
+			elog(ERROR, "unrecognized node type69: %d", (int) nodeTag(stmt));
 	}
 
 	/*
@@ -306,7 +306,7 @@ ChoosePortalStrategy(List *stmts)
 			}
 		}
 		else
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(stmt));
+			elog(ERROR, "unrecognized node type70: %d", (int) nodeTag(stmt));
 	}
 	if (nSetTag == 1)
 		return PORTAL_ONE_RETURNING;

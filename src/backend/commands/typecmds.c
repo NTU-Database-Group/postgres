@@ -863,7 +863,7 @@ DefineDomain(CreateDomainStmt *stmt)
 		Constraint *constr = lfirst(listptr);
 
 		if (!IsA(constr, Constraint))
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type5: %d",
 				 (int) nodeTag(constr));
 		switch (constr->contype)
 		{
@@ -2939,7 +2939,7 @@ AlterDomainAddConstraint(List *names, Node *newConstraint,
 	checkDomainOwner(tup);
 
 	if (!IsA(newConstraint, Constraint))
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type6: %d",
 			 (int) nodeTag(newConstraint));
 
 	constr = (Constraint *) newConstraint;

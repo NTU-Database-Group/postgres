@@ -17033,7 +17033,7 @@ RangeVarCallbackForAlterRelation(const RangeVar *rv, Oid relid, Oid oldrelid,
 		reltype = ((AlterTableStmt *) stmt)->objtype;
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d", (int) nodeTag(stmt));
+		elog(ERROR, "unrecognized node type4: %d", (int) nodeTag(stmt));
 		reltype = OBJECT_TABLE; /* placate compiler */
 	}
 

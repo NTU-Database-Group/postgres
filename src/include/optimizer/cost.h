@@ -210,5 +210,8 @@ extern void set_foreign_size_estimates(PlannerInfo *root, RelOptInfo *rel);
 extern PathTarget *set_pathtarget_cost_width(PlannerInfo *root, PathTarget *target);
 extern double compute_bitmap_pages(PlannerInfo *root, RelOptInfo *baserel,
 								   Path *bitmapqual, int loop_count, Cost *cost, double *tuple);
+double get_external_cost(Path* path, PlannerInfo* root);
+double char_to_double(char *str);
+char* path_to_string(Path *path, PlannerInfo *root);
 
 #endif							/* COST_H */

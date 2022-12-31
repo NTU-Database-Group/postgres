@@ -438,7 +438,7 @@ pull_up_sublinks_jointree_recurse(PlannerInfo *root, Node *jtnode,
 		jtnode = jtlink;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type46: %d",
 			 (int) nodeTag(jtnode));
 	return jtnode;
 }
@@ -934,7 +934,7 @@ pull_up_subqueries_recurse(PlannerInfo *root, Node *jtnode,
 		}
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type47: %d",
 			 (int) nodeTag(jtnode));
 	return jtnode;
 }
@@ -1434,7 +1434,7 @@ pull_up_union_leaf_queries(Node *setOp, PlannerInfo *root, int parentRTindex,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type48: %d",
 			 (int) nodeTag(setOp));
 	}
 }
@@ -1963,7 +1963,7 @@ is_simple_union_all_recurse(Node *setOp, Query *setOpQuery, List *colTypes)
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type49: %d",
 			 (int) nodeTag(setOp));
 		return false;			/* keep compiler quiet */
 	}
@@ -2085,7 +2085,7 @@ jointree_contains_lateral_outer_refs(PlannerInfo *root, Node *jtnode,
 			return true;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type50: %d",
 			 (int) nodeTag(jtnode));
 	return false;
 }
@@ -2317,7 +2317,7 @@ replace_vars_in_jointree(Node *jtnode,
 		context->need_phvs = save_need_phvs;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type51: %d",
 			 (int) nodeTag(jtnode));
 }
 
@@ -2762,7 +2762,7 @@ reduce_outer_joins_pass1(Node *jtnode)
 		result->sub_states = lappend(result->sub_states, sub_state);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type52: %d",
 			 (int) nodeTag(jtnode));
 	return result;
 }
@@ -3024,7 +3024,7 @@ reduce_outer_joins_pass2(Node *jtnode,
 		}
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type53: %d",
 			 (int) nodeTag(jtnode));
 }
 
@@ -3294,7 +3294,7 @@ remove_useless_results_recurse(PlannerInfo *root, Node *jtnode)
 		}
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type54: %d",
 			 (int) nodeTag(jtnode));
 	return jtnode;
 }
@@ -3638,7 +3638,7 @@ get_relids_in_jointree(Node *jtnode, bool include_joins)
 			result = bms_add_member(result, j->rtindex);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type55: %d",
 			 (int) nodeTag(jtnode));
 	return result;
 }
@@ -3701,7 +3701,7 @@ find_jointree_node_for_rel(Node *jtnode, int relid)
 			return jtnode;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type56: %d",
 			 (int) nodeTag(jtnode));
 	return NULL;
 }

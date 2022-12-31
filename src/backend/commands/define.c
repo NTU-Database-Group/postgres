@@ -70,7 +70,7 @@ defGetString(DefElem *def)
 		case T_A_Star:
 			return pstrdup("*");
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(def->arg));
+			elog(ERROR, "unrecognized node type1: %d", (int) nodeTag(def->arg));
 	}
 	return NULL;				/* keep compiler quiet */
 }
@@ -341,7 +341,7 @@ defGetTypeLength(DefElem *def)
 			/* must be an operator name */
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(def->arg));
+			elog(ERROR, "unrecognized node type2: %d", (int) nodeTag(def->arg));
 	}
 	ereport(ERROR,
 			(errcode(ERRCODE_SYNTAX_ERROR),
@@ -364,7 +364,7 @@ defGetStringList(DefElem *def)
 				 errmsg("%s requires a parameter",
 						def->defname)));
 	if (nodeTag(def->arg) != T_List)
-		elog(ERROR, "unrecognized node type: %d", (int) nodeTag(def->arg));
+		elog(ERROR, "unrecognized node type3: %d", (int) nodeTag(def->arg));
 
 	foreach(cell, (List *) def->arg)
 	{

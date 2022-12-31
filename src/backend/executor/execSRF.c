@@ -472,7 +472,7 @@ ExecInitFunctionResultSet(Expr *expr,
 				   econtext->ecxt_per_query_memory, true, true);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type18: %d",
 			 (int) nodeTag(expr));
 
 	/* shouldn't get here unless the selected function returns set */

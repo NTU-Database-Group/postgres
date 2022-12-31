@@ -2756,7 +2756,7 @@ finalize_plan(PlannerInfo *root, Plan *plan,
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type45: %d",
 				 (int) nodeTag(plan));
 	}
 

@@ -3623,7 +3623,7 @@ recurse_pushdown_safe(Node *setOp, Query *topquery,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type30: %d",
 			 (int) nodeTag(setOp));
 	}
 	return true;
@@ -3967,7 +3967,7 @@ recurse_push_qual(Node *setOp, Query *topquery,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type31: %d",
 			 (int) nodeTag(setOp));
 	}
 }

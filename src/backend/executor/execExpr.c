@@ -2402,7 +2402,7 @@ ExecInitExprRec(Expr *node, ExprState *state,
 			}
 
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type14: %d",
 				 (int) nodeTag(node));
 			break;
 	}

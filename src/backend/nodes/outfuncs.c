@@ -858,7 +858,7 @@ outNode(StringInfo str, const void *obj)
 				 * This should be an ERROR, but it's too useful to be able to
 				 * dump structures that outNode only understands part of.
 				 */
-				elog(WARNING, "could not dump unrecognized node type: %d",
+				elog(WARNING, "could not dump unrecognized node type28: %d",
 					 (int) nodeTag(obj));
 				break;
 		}

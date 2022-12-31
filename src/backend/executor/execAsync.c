@@ -39,7 +39,7 @@ ExecAsyncRequest(AsyncRequest *areq)
 			break;
 		default:
 			/* If the node doesn't support async, caller messed up. */
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type10: %d",
 				 (int) nodeTag(areq->requestee));
 	}
 
@@ -72,7 +72,7 @@ ExecAsyncConfigureWait(AsyncRequest *areq)
 			break;
 		default:
 			/* If the node doesn't support async, caller messed up. */
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type11: %d",
 				 (int) nodeTag(areq->requestee));
 	}
 
@@ -98,7 +98,7 @@ ExecAsyncNotify(AsyncRequest *areq)
 			break;
 		default:
 			/* If the node doesn't support async, caller messed up. */
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type12: %d",
 				 (int) nodeTag(areq->requestee));
 	}
 
@@ -123,7 +123,7 @@ ExecAsyncResponse(AsyncRequest *areq)
 			break;
 		default:
 			/* If the node doesn't support async, caller messed up. */
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type13: %d",
 				 (int) nodeTag(areq->requestor));
 	}
 }

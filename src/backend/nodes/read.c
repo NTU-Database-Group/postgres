@@ -507,7 +507,7 @@ nodeRead(const char *token, int tok_len)
 				break;
 			}
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) type);
+			elog(ERROR, "unrecognized node type29: %d", (int) type);
 			result = NULL;		/* keep compiler happy */
 			break;
 	}

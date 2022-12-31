@@ -424,7 +424,7 @@ recurse_set_operations(Node *setOp, PlannerInfo *root,
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type57: %d",
 			 (int) nodeTag(setOp));
 		*pTargetList = NIL;
 	}

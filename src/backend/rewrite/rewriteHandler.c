@@ -1957,7 +1957,7 @@ markQueryForLocking(Query *qry, Node *jtnode,
 		markQueryForLocking(qry, j->rarg, strength, waitPolicy, pushedDown);
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d",
+		elog(ERROR, "unrecognized node type68: %d",
 			 (int) nodeTag(jtnode));
 }
 

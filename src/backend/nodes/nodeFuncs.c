@@ -250,7 +250,7 @@ exprType(const Node *expr)
 			type = exprType((Node *) ((const PlaceHolderVar *) expr)->phexpr);
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(expr));
+			elog(ERROR, "unrecognized node type22: %d", (int) nodeTag(expr));
 			type = InvalidOid;	/* keep compiler quiet */
 			break;
 	}
@@ -955,7 +955,7 @@ exprCollation(const Node *expr)
 			coll = exprCollation((Node *) ((const PlaceHolderVar *) expr)->phexpr);
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(expr));
+			elog(ERROR, "unrecognized node type23: %d", (int) nodeTag(expr));
 			coll = InvalidOid;	/* keep compiler quiet */
 			break;
 	}
@@ -1162,7 +1162,7 @@ exprSetCollation(Node *expr, Oid collation)
 			Assert(!OidIsValid(collation)); /* ... so never set a collation */
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(expr));
+			elog(ERROR, "unrecognized node type24: %d", (int) nodeTag(expr));
 			break;
 	}
 }
@@ -2335,7 +2335,7 @@ expression_tree_walker_impl(Node *node,
 			}
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type25: %d",
 				 (int) nodeTag(node));
 			break;
 	}
@@ -3307,7 +3307,7 @@ expression_tree_mutator_impl(Node *node,
 			}
 			break;
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type26: %d",
 				 (int) nodeTag(node));
 			break;
 	}
@@ -4040,7 +4040,7 @@ raw_expression_tree_walker_impl(Node *node,
 			/* search_clause and cycle_clause are not interesting here */
 			return WALK(((CommonTableExpr *) node)->ctequery);
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type27: %d",
 				 (int) nodeTag(node));
 			break;
 	}

@@ -395,7 +395,7 @@ ClassifyUtilityCommandAsReadOnly(Node *parsetree)
 			}
 
 		default:
-			elog(ERROR, "unrecognized node type: %d",
+			elog(ERROR, "unrecognized node type71: %d",
 				 (int) nodeTag(parsetree));
 			return 0;			/* silence stupider compilers */
 	}
@@ -1904,7 +1904,7 @@ ProcessUtilitySlow(ParseState *pstate,
 				break;
 
 			default:
-				elog(ERROR, "unrecognized node type: %d",
+				elog(ERROR, "unrecognized node type72: %d",
 					 (int) nodeTag(parsetree));
 				break;
 		}
@@ -3217,7 +3217,7 @@ CreateCommandTag(Node *parsetree)
 			break;
 
 		default:
-			elog(WARNING, "unrecognized node type: %d",
+			elog(WARNING, "unrecognized node type73: %d",
 				 (int) nodeTag(parsetree));
 			tag = CMDTAG_UNKNOWN;
 			break;
@@ -3751,7 +3751,7 @@ GetCommandLogLevel(Node *parsetree)
 			break;
 
 		default:
-			elog(WARNING, "unrecognized node type: %d",
+			elog(WARNING, "unrecognized node type74: %d",
 				 (int) nodeTag(parsetree));
 			lev = LOGSTMT_ALL;
 			break;

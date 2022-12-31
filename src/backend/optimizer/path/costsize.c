@@ -73,6 +73,9 @@
 
 #include <limits.h>
 #include <math.h>
+#include <ghttp.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "access/amapi.h"
 #include "access/htup_details.h"
@@ -98,6 +101,7 @@
 #include "utils/selfuncs.h"
 #include "utils/spccache.h"
 #include "utils/tuplesort.h"
+#include "commands/explain.h"
 
 
 #define LOG2(x)  (log(x) / 0.693147180559945)
@@ -318,6 +322,7 @@ cost_seqscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + cpu_run_cost + disk_run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -390,6 +395,7 @@ cost_samplescan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -788,6 +794,7 @@ cost_index(IndexPath *path, PlannerInfo *root, double loop_count,
 
 	path->path.startup_cost = startup_cost;
 	path->path.total_cost = startup_cost + run_cost;
+	path->path.total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -960,7 +967,7 @@ get_indexpath_pages(Path *bitmapqual)
 		result = (double) ipath->indexinfo->pages;
 	}
 	else
-		elog(ERROR, "unrecognized node type: %d", nodeTag(bitmapqual));
+		elog(ERROR, "unrecognized node type32: %d", nodeTag(bitmapqual));
 
 	return result;
 }
@@ -1074,6 +1081,7 @@ cost_bitmap_heap_scan(Path *path, PlannerInfo *root, RelOptInfo *baserel,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	// path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1108,7 +1116,7 @@ cost_bitmap_tree_node(Path *path, Cost *cost, Selectivity *selec)
 	}
 	else
 	{
-		elog(ERROR, "unrecognized node type: %d", nodeTag(path));
+		elog(ERROR, "unrecognized node type33: %d", nodeTag(path));
 		*cost = *selec = 0;		/* keep compiler quiet */
 	}
 }
@@ -1159,6 +1167,7 @@ cost_bitmap_and_node(BitmapAndPath *path, PlannerInfo *root)
 	path->path.rows = 0;		/* per above, not used */
 	path->path.startup_cost = totalCost;
 	path->path.total_cost = totalCost;
+	path->path.total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1205,6 +1214,7 @@ cost_bitmap_or_node(BitmapOrPath *path, PlannerInfo *root)
 	path->path.rows = 0;		/* per above, not used */
 	path->path.startup_cost = totalCost;
 	path->path.total_cost = totalCost;
+	path->path.total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1312,6 +1322,7 @@ cost_tidscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1407,6 +1418,7 @@ cost_tidrangescan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1459,6 +1471,7 @@ cost_subqueryscan(SubqueryScanPath *path, PlannerInfo *root,
 	 */
 	path->path.startup_cost = path->subpath->startup_cost;
 	path->path.total_cost = path->subpath->total_cost;
+	path->path.total_cost = get_external_cost(path, root);
 
 	/*
 	 * However, if there are no relevant restriction clauses and the
@@ -1488,6 +1501,7 @@ cost_subqueryscan(SubqueryScanPath *path, PlannerInfo *root,
 
 	path->path.startup_cost += startup_cost;
 	path->path.total_cost += startup_cost + run_cost;
+	path->path.total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1549,6 +1563,7 @@ cost_functionscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1605,6 +1620,7 @@ cost_tablefuncscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1652,6 +1668,7 @@ cost_valuesscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1699,6 +1716,7 @@ cost_ctescan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1736,6 +1754,7 @@ cost_namedtuplestorescan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -1770,6 +1789,7 @@ cost_resultscan(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -2113,6 +2133,7 @@ cost_sort(Path *path, PlannerInfo *root,
 	path->rows = tuples;
 	path->startup_cost = startup_cost;
 	path->total_cost = startup_cost + run_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -2405,6 +2426,7 @@ cost_merge_append(Path *path, PlannerInfo *root,
 
 	path->startup_cost = startup_cost + input_startup_cost;
 	path->total_cost = startup_cost + run_cost + input_total_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -2803,6 +2825,7 @@ cost_agg(Path *path, PlannerInfo *root,
 	path->rows = output_tuples;
 	path->startup_cost = startup_cost;
 	path->total_cost = total_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -2876,6 +2899,7 @@ cost_windowagg(Path *path, PlannerInfo *root,
 	path->rows = input_tuples;
 	path->startup_cost = startup_cost;
 	path->total_cost = total_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -2930,6 +2954,7 @@ cost_group(Path *path, PlannerInfo *root,
 	path->rows = output_tuples;
 	path->startup_cost = startup_cost;
 	path->total_cost = total_cost;
+	path->total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -3205,6 +3230,7 @@ final_cost_nestloop(PlannerInfo *root, NestPath *path,
 
 	path->jpath.path.startup_cost = startup_cost;
 	path->jpath.path.total_cost = startup_cost + run_cost;
+	path->jpath.path.total_cost = get_external_cost(&path->jpath.path, root);
 }
 
 /*
@@ -3711,6 +3737,7 @@ final_cost_mergejoin(PlannerInfo *root, MergePath *path,
 
 	path->jpath.path.startup_cost = startup_cost;
 	path->jpath.path.total_cost = startup_cost + run_cost;
+	path->jpath.path.total_cost = get_external_cost(path, root);
 }
 
 /*
@@ -4147,6 +4174,7 @@ final_cost_hashjoin(PlannerInfo *root, HashPath *path,
 
 	path->jpath.path.startup_cost = startup_cost;
 	path->jpath.path.total_cost = startup_cost + run_cost;
+	path->jpath.path.total_cost = get_external_cost(path, root);
 }
 
 
@@ -6231,4 +6259,466 @@ compute_bitmap_pages(PlannerInfo *root, RelOptInfo *baserel, Path *bitmapqual,
 		*tuple = tuples_fetched;
 
 	return pages_fetched;
+}
+
+double get_external_cost(Path* path, PlannerInfo* root) {
+	char* ret = path_to_string(path, root);
+	elog(LOG, "plan: \n%s\n", ret);
+  char *uri = "http://127.0.0.1:5000/";
+  ghttp_request *request = NULL;
+  ghttp_status status;
+  char *buf;
+  int bytes_read;
+  int size;
+  request = ghttp_request_new();
+  if (ghttp_set_uri(request, uri) == -1)
+    return -1;
+  if (ghttp_set_type(request, ghttp_type_get) == -1)
+    return -1;
+  ghttp_prepare(request);
+  status = ghttp_process(request);
+  if (status == ghttp_error)
+    return -1;
+  buf = ghttp_get_body(request);
+  bytes_read = ghttp_get_body_len(request);
+  size = strlen(buf);
+	return char_to_double(buf);
+}
+
+double char_to_double(char *str) {
+	double result;
+	sscanf(str, "%lf", &result);
+	return result;
+}
+
+static char* print_restrictclauses(PlannerInfo *root, List *clauses);
+static char* print_path(PlannerInfo *root, Path *path, int indent);
+static char* print_relids(PlannerInfo *root, Relids relids);
+static char* print_expr2(const Node *node, const List *rtable);
+static char* print_pathkeys(const List *pathkeys, const List *rtable);
+
+char* path_to_string(Path* path, PlannerInfo* root) {
+	return print_path(root, path, 1);
+}
+
+static char*
+print_restrictclauses(PlannerInfo *root, List *clauses)
+{
+	ListCell   *l;
+	char* ret = psprintf("");
+	foreach(l, clauses)
+	{
+		RestrictInfo *c = lfirst(l);
+
+		ret = psprintf("%s%s", ret, print_expr2((const Node *) c->clause, root->parse->rtable));
+		if (lnext(clauses, l))
+			ret = psprintf("%s, ", ret);
+	}
+	return ret;
+}
+
+static char*
+print_path(PlannerInfo *root, Path *path, int indent)
+{
+	const char *ptype;
+	bool		join = false;
+	Path	   *subpath = NULL;
+	int			i;
+	char* ret = psprintf("{\n");
+	Plan* plan = create_plan(root, path);
+
+	switch (nodeTag(path))
+	{
+		case T_Path:
+			switch (path->pathtype)
+			{
+				case T_SeqScan:
+					ptype = "SeqScan";
+					break;
+				case T_SampleScan:
+					ptype = "SampleScan";
+					break;
+				case T_FunctionScan:
+					ptype = "FunctionScan";
+					break;
+				case T_TableFuncScan:
+					ptype = "TableFuncScan";
+					break;
+				case T_ValuesScan:
+					ptype = "ValuesScan";
+					break;
+				case T_CteScan:
+					ptype = "CteScan";
+					break;
+				case T_NamedTuplestoreScan:
+					ptype = "NamedTuplestoreScan";
+					break;
+				case T_Result:
+					ptype = "Result";
+					break;
+				case T_WorkTableScan:
+					ptype = "WorkTableScan";
+					break;
+				default:
+					ptype = "???Path";
+					break;
+			}
+			break;
+		case T_IndexPath:
+			ptype = "IdxScan";
+			break;
+		case T_BitmapHeapPath:
+			ptype = "BitmapHeapScan";
+			break;
+		case T_BitmapAndPath:
+			ptype = "BitmapAndPath";
+			break;
+		case T_BitmapOrPath:
+			ptype = "BitmapOrPath";
+			break;
+		case T_TidPath:
+			ptype = "TidScan";
+			break;
+		case T_SubqueryScanPath:
+			ptype = "SubqueryScan";
+			break;
+		case T_ForeignPath:
+			ptype = "ForeignScan";
+			break;
+		case T_CustomPath:
+			ptype = "CustomScan";
+			break;
+		case T_NestPath:
+			ptype = "NestLoop";
+			join = true;
+			break;
+		case T_MergePath:
+			ptype = "MergeJoin";
+			join = true;
+			break;
+		case T_HashPath:
+			ptype = "HashJoin";
+			join = true;
+			break;
+		case T_AppendPath:
+			ptype = "Append";
+			break;
+		case T_MergeAppendPath:
+			ptype = "MergeAppend";
+			break;
+		case T_GroupResultPath:
+			ptype = "GroupResult";
+			break;
+		case T_MaterialPath:
+			ptype = "Material";
+			subpath = ((MaterialPath *) path)->subpath;
+			break;
+		case T_MemoizePath:
+			ptype = "Memoize";
+			subpath = ((MemoizePath *) path)->subpath;
+			break;
+		case T_UniquePath:
+			ptype = "Unique";
+			subpath = ((UniquePath *) path)->subpath;
+			break;
+		case T_GatherPath:
+			ptype = "Gather";
+			subpath = ((GatherPath *) path)->subpath;
+			break;
+		case T_GatherMergePath:
+			ptype = "GatherMerge";
+			subpath = ((GatherMergePath *) path)->subpath;
+			break;
+		case T_ProjectionPath:
+			ptype = "Projection";
+			subpath = ((ProjectionPath *) path)->subpath;
+			break;
+		case T_ProjectSetPath:
+			ptype = "ProjectSet";
+			subpath = ((ProjectSetPath *) path)->subpath;
+			break;
+		case T_SortPath:
+			ptype = "Sort";
+			subpath = ((SortPath *) path)->subpath;
+			break;
+		case T_IncrementalSortPath:
+			ptype = "IncrementalSort";
+			subpath = ((SortPath *) path)->subpath;
+			break;
+		case T_GroupPath:
+			ptype = "Group";
+			subpath = ((GroupPath *) path)->subpath;
+			break;
+		case T_UpperUniquePath:
+			ptype = "UpperUnique";
+			subpath = ((UpperUniquePath *) path)->subpath;
+			break;
+		case T_AggPath:
+			ptype = "Agg";
+			subpath = ((AggPath *) path)->subpath;
+			break;
+		case T_GroupingSetsPath:
+			ptype = "GroupingSets";
+			subpath = ((GroupingSetsPath *) path)->subpath;
+			break;
+		case T_MinMaxAggPath:
+			ptype = "MinMaxAgg";
+			break;
+		case T_WindowAggPath:
+			ptype = "WindowAgg";
+			subpath = ((WindowAggPath *) path)->subpath;
+			break;
+		case T_SetOpPath:
+			ptype = "SetOp";
+			subpath = ((SetOpPath *) path)->subpath;
+			break;
+		case T_RecursiveUnionPath:
+			ptype = "RecursiveUnion";
+			break;
+		case T_LockRowsPath:
+			ptype = "LockRows";
+			subpath = ((LockRowsPath *) path)->subpath;
+			break;
+		case T_ModifyTablePath:
+			ptype = "ModifyTable";
+			break;
+		case T_LimitPath:
+			ptype = "Limit";
+			subpath = ((LimitPath *) path)->subpath;
+			break;
+		default:
+			ptype = "???Path";
+			break;
+	}
+
+	for (i = 0; i < indent; i++)
+		ret = psprintf("\t%s", ret);
+	ret = psprintf("%s\"type\": \"%s\"", ret, ptype);
+	// parallel aware
+	ret = psprintf("%s,\n\"parallel aware\": %d,\n\"plan width\": %d,\n\"plan rows\": %d,\n", ret, plan->parallel_aware, plan->plan_width, plan->plan_rows);
+
+	if (path->parent)
+	{
+		for (i = 0; i < indent; i++)
+			ret = psprintf("%s\t", ret);
+		ret = psprintf("%s\"parent\":\"(", ret);
+		ret = psprintf("%s%s", ret, print_relids(root, path->parent->relids));
+		ret = psprintf("%s)\",\n", ret);
+	}
+	if (path->param_info)
+	{
+		for (i = 0; i < indent; i++)
+			ret = psprintf("%s\t", ret);
+		ret = psprintf("%s\"required_outer\":\"(", ret);
+		ret = psprintf("%s%s", ret, print_relids(root, path->param_info->ppi_req_outer));
+		ret = psprintf("%s)\",", ret);
+	}
+	ret = psprintf("%s\"rows\": %.0f,\n\"cost\": \"%.2f..%.2f\",\n", ret,
+		   path->rows, path->startup_cost, path->total_cost);
+
+	if (path->pathkeys)
+	{
+		for (i = 0; i < indent; i++)
+			ret = psprintf("%s\t", ret);
+		ret = psprintf("%s\"pathkeys\": ", ret);
+		ret = psprintf("%s\"%s\",\n", ret, print_pathkeys(path->pathkeys, root->parse->rtable));
+	}
+
+	if (join)
+	{
+		JoinPath   *jp = (JoinPath *) path;
+
+		for (i = 0; i < indent; i++)
+			ret = psprintf("%s\t", ret);
+		ret = psprintf("%s\"clauses\": ", ret);
+		ret = psprintf("%s\"%s\"", ret, print_restrictclauses(root, jp->joinrestrictinfo));
+		ret = psprintf("%s,\n", ret);
+
+		if (IsA(path, MergePath))
+		{
+			MergePath  *mp = (MergePath *) path;
+
+			for (i = 0; i < indent; i++)
+				ret = psprintf("%s\t", ret);
+			ret = psprintf("%s\"sortouter\": %d,\n\"sortinner\": %d,\n\"materializeinner\": %d,\n", ret,
+				   ((mp->outersortkeys) ? 1 : 0),
+				   ((mp->innersortkeys) ? 1 : 0),
+				   ((mp->materialize_inner) ? 1 : 0));
+		}
+
+		ret = psprintf("%s\"outer\": %s,\n", ret, print_path(root, jp->outerjoinpath, indent + 1));
+		ret = psprintf("%s\"inner\": %s,\n", ret, print_path(root, jp->innerjoinpath, indent + 1));
+	}
+
+	if (subpath)
+		ret = psprintf("%s\"subplan\": %s", ret, print_path(root, subpath, indent + 1));
+	ret = psprintf("%s\n", ret);
+	for (i = 0; i < indent; i++)
+		ret = psprintf("%s\t", ret);
+	ret = psprintf("%s}", ret);
+	return ret;
+}
+
+static char*
+print_relids(PlannerInfo *root, Relids relids)
+{
+	int			x;
+	bool		first = true;
+	char* ret = psprintf("");
+
+	x = -1;
+	while ((x = bms_next_member(relids, x)) >= 0)
+	{
+		if (!first)
+			ret = psprintf("%s,", ret);
+		if (x < root->simple_rel_array_size &&
+			root->simple_rte_array[x])
+			ret = psprintf("%s%s", ret, root->simple_rte_array[x]->eref->aliasname);
+		else
+			ret = psprintf("%s%d", ret, x);
+		first = false;
+	}
+	return ret;
+}
+
+static char*
+print_expr2(const Node *expr, const List *rtable)
+{
+	if (expr == NULL)
+	{
+		// printf("<>");
+		return psprintf("<>");
+	}
+	char* ret = psprintf("");
+
+	if (IsA(expr, Var))
+	{
+		const Var  *var = (const Var *) expr;
+		char	   *relname,
+				   *attname;
+
+		switch (var->varno)
+		{
+			case INNER_VAR:
+				relname = "INNER";
+				attname = "?";
+				break;
+			case OUTER_VAR:
+				relname = "OUTER";
+				attname = "?";
+				break;
+			case INDEX_VAR:
+				relname = "INDEX";
+				attname = "?";
+				break;
+			default:
+				{
+					RangeTblEntry *rte;
+
+					Assert(var->varno > 0 &&
+						   (int) var->varno <= list_length(rtable));
+					rte = rt_fetch(var->varno, rtable);
+					relname = rte->eref->aliasname;
+					attname = get_rte_attribute_name(rte, var->varattno);
+				}
+				break;
+		}
+		ret = psprintf("%s%s.%s", ret, relname, attname);
+	}
+	else if (IsA(expr, Const))
+	{
+		const Const *c = (const Const *) expr;
+		Oid			typoutput;
+		bool		typIsVarlena;
+		char	   *outputstr;
+
+		if (c->constisnull)
+		{
+			// printf("NULL");
+			return "NULL";
+		}
+
+		getTypeOutputInfo(c->consttype,
+						  &typoutput, &typIsVarlena);
+
+		outputstr = OidOutputFunctionCall(typoutput, c->constvalue);
+		// printf("%s", outputstr);
+		ret = psprintf("%s%s", ret, outputstr);
+		pfree(outputstr);
+	}
+	else if (IsA(expr, OpExpr))
+	{
+		const OpExpr *e = (const OpExpr *) expr;
+		char	   *opname;
+
+		opname = get_opname(e->opno);
+		if (list_length(e->args) > 1)
+		{
+			ret = psprintf("%s%s", ret, print_expr2(get_leftop((const Expr *) e), rtable));
+			ret = psprintf("%s %s ", ret, ((opname != NULL) ? opname : "(invalid operator)"));
+			ret = psprintf("%s%s", ret, print_expr2(get_rightop((const Expr *) e), rtable));
+		}
+		else
+		{
+			ret = psprintf("%s%s ", ret, ((opname != NULL) ? opname : "(invalid operator)"));
+			ret = psprintf("%s%s", ret, print_expr2(get_leftop((const Expr *) e), rtable));
+		}
+	}
+	else if (IsA(expr, FuncExpr))
+	{
+		const FuncExpr *e = (const FuncExpr *) expr;
+		char	   *funcname;
+		ListCell   *l;
+
+		funcname = get_func_name(e->funcid);
+		ret = psprintf("%s%s(", ret, ((funcname != NULL) ? funcname : "(invalid function)"));
+		foreach(l, e->args)
+		{
+			ret = psprintf("%s%s", ret, print_expr2(lfirst(l), rtable));
+			if (lnext(e->args, l))
+				ret = psprintf("%s,", ret);
+		}
+		ret = psprintf("%s)", ret);
+	}
+	else
+		ret = psprintf("unknown expr");
+	return ret;
+}
+
+static char*
+print_pathkeys(const List *pathkeys, const List *rtable)
+{
+	const ListCell *i;
+	char* ret = psprintf("");
+
+	ret = psprintf("%s(", ret);
+	foreach(i, pathkeys)
+	{
+		PathKey    *pathkey = (PathKey *) lfirst(i);
+		EquivalenceClass *eclass;
+		ListCell   *k;
+		bool		first = true;
+
+		eclass = pathkey->pk_eclass;
+		/* chase up, in case pathkey is non-canonical */
+		while (eclass->ec_merged)
+			eclass = eclass->ec_merged;
+
+		ret = psprintf("%s(", ret);
+		foreach(k, eclass->ec_members)
+		{
+			EquivalenceMember *mem = (EquivalenceMember *) lfirst(k);
+
+			if (first)
+				first = false;
+			else
+				ret = psprintf("%s, ", ret);
+			ret = psprintf("%s%s", ret, print_expr2((Node *) mem->em_expr, rtable));
+		}
+		ret = psprintf("%s)", ret);
+		if (lnext(pathkeys, i))
+			ret = psprintf("%s, ", ret);
+	}
+	ret = psprintf("%s)\n", ret);
+	return ret;
 }

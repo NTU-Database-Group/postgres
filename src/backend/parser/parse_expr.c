@@ -296,7 +296,7 @@ transformExprRecurse(ParseState *pstate, Node *expr)
 
 		default:
 			/* should not reach here */
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(expr));
+			elog(ERROR, "unrecognized node type60: %d", (int) nodeTag(expr));
 			result = NULL;		/* keep compiler quiet */
 			break;
 	}

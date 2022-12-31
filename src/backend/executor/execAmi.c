@@ -300,7 +300,7 @@ ExecReScan(PlanState *node)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type7: %d", (int) nodeTag(node));
 			break;
 	}
 
@@ -355,7 +355,7 @@ ExecMarkPos(PlanState *node)
 
 		default:
 			/* don't make hard error unless caller asks to restore... */
-			elog(DEBUG2, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(DEBUG2, "unrecognized node type8: %d", (int) nodeTag(node));
 			break;
 	}
 }
@@ -403,7 +403,7 @@ ExecRestrPos(PlanState *node)
 			break;
 
 		default:
-			elog(ERROR, "unrecognized node type: %d", (int) nodeTag(node));
+			elog(ERROR, "unrecognized node type9: %d", (int) nodeTag(node));
 			break;
 	}
 }
